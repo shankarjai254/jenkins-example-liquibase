@@ -9,7 +9,7 @@
 
     <include file="my_app-1.0.xml" relativeToChangelogFile="true"/>
 
-    <!-- Enable when ready -->
+    <!-- Enable when  need to removeready -->
     <!-- <include file="my_app-1.1.xml" relativeToChangelogFile="true"/> -->
 
 </databaseChangeLog>
