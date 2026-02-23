@@ -7,8 +7,9 @@
        http://www.liquibase.org/xml/ns/dbchangelog
        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
 
-    <include file="my_app-1.0.xml"/>
+    <include file="my_app-1.0.xml" relativeToChangelogFile="true"/>
 
-    <!-- <include file="my_app-1.1.xml"/> -->
+    <!-- Enable when ready -->
+    <!-- <include file="my_app-1.1.xml" relativeToChangelogFile="true"/> -->
 
 </databaseChangeLog>

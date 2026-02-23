@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog 
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <include file="my_app-1.0.xml"/>
+
+    <!-- <include file="my_app-1.1.xml"/> -->
+
+</databaseChangeLog>
+
+
+\\\\\\
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog 
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+        <createTable tableName="countries">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="iso" type="VARCHAR(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="iso3" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="iso_numeric" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="capital" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="continent_code" type="VARCHAR(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_code" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+      </createTable>
+    </changeSet>
+</databaseChangeLog>
+/////
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog 
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+      <addColumn tableName="countries">
+        <column name="abc_xyz" type="VARCHAR(3)">
+          <constraints nullable="false"/>
+        </column>
+      </addColumn>
+    </changeSet>
+</databaseChangeLog>
+////
+pipeline {
+  agent any 
+  // agent {
+  //   docker { image 'liquibase/liquibase:4.4.2' }
+  // }
+  environment {
+    MARIADB_CREDS=credentials('mariadb-credentials')
+  }
+  stages {
+    stage('Status') {
+      steps {
+        sh 'liquibase status --url="jdbc:mysql://localhost:3306/my_app" --changeLogFile=my_app-wrapper.xml --username=$MARIADB_CREDS_USR --password=$MARIADB_CREDS_PSW'
+      }
+    }
+    stage('Update') {
+      steps {
+        sh 'liquibase update --url="jdbc:mysql://localhost:3306/my_app" --changeLogFile=my_app-wrapper.xml --username=$MARIADB_CREDS_USR --password=$MARIADB_CREDS_PSW'
+      }
+    }
+  }
+  post {
+    always {
+      cleanWs()
+    }
+  }
+}

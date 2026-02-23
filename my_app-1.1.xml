@@ -6,10 +6,15 @@
     xsi:schemaLocation="
        http://www.liquibase.org/xml/ns/dbchangelog
        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
-      <addColumn tableName="countries">
-        <column name="abc_xyz" type="VARCHAR(3)">
-          <constraints nullable="false"/>
-        </column>
-      </addColumn>
+
+    <changeSet id="1.1-add-abc-column" author="jai">
+
+        <addColumn tableName="countries">
+            <column name="abc_xyz" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
     </changeSet>
+
 </databaseChangeLog>
